@@ -12,9 +12,10 @@ function getRequestOptions(endpoint, fixture, baseUrl) {
 
   (endpoint.parameters || []).forEach((param) => {
     var value = fixture.request[param.name];
+    var isUndefined = !value && value !== 0 && value !== false;
 
-    if (param.required && !value) throw new Error(`No required request field ${param.name} for ${fixture.method.toUpperCase()} ${fixture.url}`);
-    if (!value) return;
+    if (param.required && isUndefined) throw new Error(`No required request field ${param.name} for ${fixture.method.toUpperCase()} ${fixture.url}`);
+    if (isUndefined) return;
 
     switch (param.in) {
       case 'body':
